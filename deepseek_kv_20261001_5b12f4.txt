@@ -1,0 +1,286 @@
+#:import dp kivy.metrics.dp
+
+<StyledButton@Button>:
+    background_color: 0.18, 0.15, 0.30, 1
+    color: 1, 1, 1, 1
+    font_size: '18sp'
+    size_hint_y: None
+    height: dp(60)
+    canvas.before:
+        Color:
+            rgba: self.background_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(15)]
+
+<MainMenuScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(15)
+        canvas.before:
+            Color:
+                rgba: 0.05, 0.05, 0.12, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: "🌙 Sleep Well"
+            font_size: '32sp'
+            color: 0.8, 0.7, 1, 1
+            size_hint_y: None
+            height: dp(80)
+
+        StyledButton:
+            text: "🎵 Звуки для сна"
+            on_release: root.manager.current = 'music'
+        StyledButton:
+            text: "⏱ Таймер сна"
+            on_release: root.manager.current = 'timer'
+        StyledButton:
+            text: "⏰ Будильник"
+            on_release: root.manager.current = 'alarm'
+        StyledButton:
+            text: "🖼 Галерея"
+            on_release: root.manager.current = 'gallery'
+
+        Widget:
+
+<MusicScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(10)
+        canvas.before:
+            Color:
+                rgba: 0.05, 0.05, 0.12, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: "🎵 Звуки для сна"
+            font_size: '24sp'
+            color: 0.8, 0.7, 1, 1
+            size_hint_y: None
+            height: dp(50)
+
+        Label:
+            text: "Сейчас играет: " + root.current_track
+            font_size: '16sp'
+            color: 0.6, 0.6, 0.8, 1
+            size_hint_y: None
+            height: dp(40)
+
+        ScrollView:
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: dp(10)
+                StyledButton:
+                    text: "🌧 Дождь"
+                    on_release: root.play_track("🌧 Дождь")
+                StyledButton:
+                    text: "🌊 Океан"
+                    on_release: root.play_track("🌊 Океан")
+                StyledButton:
+                    text: "🌲 Лес"
+                    on_release: root.play_track("🌲 Лес")
+                StyledButton:
+                    text: "🎵 Белый шум"
+                    on_release: root.play_track("🎵 Белый шум")
+                StyledButton:
+                    text: "🎹 Пианино"
+                    on_release: root.play_track("🎹 Пианино")
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(50)
+            Label:
+                text: "🔊 Громкость"
+                color: 1, 1, 1, 1
+            Slider:
+                min: 0
+                max: 1
+                value: root.volume
+                on_value: root.change_volume(self.value)
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            spacing: dp(10)
+            StyledButton:
+                text: "▶ / ⏸"
+                on_release: root.toggle_play()
+            StyledButton:
+                text: "◀ Назад"
+                on_release: root.manager.current = 'menu'
+
+<TimerScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(15)
+        canvas.before:
+            Color:
+                rgba: 0.05, 0.05, 0.12, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: "⏱ Таймер сна"
+            font_size: '24sp'
+            color: 0.8, 0.7, 1, 1
+            size_hint_y: None
+            height: dp(50)
+
+        Label:
+            text: root.format_time()
+            font_size: '64sp'
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(120)
+
+        GridLayout:
+            cols: 3
+            spacing: dp(10)
+            size_hint_y: None
+            height: dp(130)
+            StyledButton:
+                text: "15 мин"
+                on_release: root.set_timer(15)
+            StyledButton:
+                text: "30 мин"
+                on_release: root.set_timer(30)
+            StyledButton:
+                text: "45 мин"
+                on_release: root.set_timer(45)
+            StyledButton:
+                text: "60 мин"
+                on_release: root.set_timer(60)
+            StyledButton:
+                text: "90 мин"
+                on_release: root.set_timer(90)
+            StyledButton:
+                text: "120 мин"
+                on_release: root.set_timer(120)
+
+        StyledButton:
+            text: "⏹ Остановить"
+            on_release: root.stop_timer()
+        StyledButton:
+            text: "◀ Назад"
+            on_release: root.manager.current = 'menu'
+
+        Widget:
+
+<AlarmScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(15)
+        canvas.before:
+            Color:
+                rgba: 0.05, 0.05, 0.12, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: "⏰ Будильник"
+            font_size: '24sp'
+            color: 0.8, 0.7, 1, 1
+            size_hint_y: None
+            height: dp(50)
+
+        Label:
+            text: root.alarm_time
+            font_size: '72sp'
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(140)
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            Label:
+                text: "Включить:"
+                color: 1, 1, 1, 1
+                font_size: '18sp'
+            Switch:
+                active: root.alarm_enabled
+                on_active: root.toggle_alarm(self.active)
+
+        GridLayout:
+            cols: 3
+            spacing: dp(10)
+            size_hint_y: None
+            height: dp(130)
+            StyledButton:
+                text: "06:00"
+                on_release: root.alarm_time = "06:00"
+            StyledButton:
+                text: "07:00"
+                on_release: root.alarm_time = "07:00"
+            StyledButton:
+                text: "08:00"
+                on_release: root.alarm_time = "08:00"
+            StyledButton:
+                text: "09:00"
+                on_release: root.alarm_time = "09:00"
+            StyledButton:
+                text: "10:00"
+                on_release: root.alarm_time = "10:00"
+            StyledButton:
+                text: "11:00"
+                on_release: root.alarm_time = "11:00"
+
+        StyledButton:
+            text: "◀ Назад"
+            on_release: root.manager.current = 'menu'
+
+        Widget:
+
+<GalleryScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 0.05, 0.05, 0.12, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: "🖼 Галерея"
+            font_size: '24sp'
+            color: 0.8, 0.7, 1, 1
+            size_hint_y: None
+            height: dp(50)
+
+        Image:
+            source: root.current_image
+            allow_stretch: True
+            keep_ratio: True
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(70)
+            spacing: dp(10)
+            padding: dp(10)
+            StyledButton:
+                text: "◀ Пред"
+                on_release: root.prev_image()
+            StyledButton:
+                text: "След ▶"
+                on_release: root.next_image()
+
+        StyledButton:
+            text: "◀ В меню"
+            size_hint_y: None
+            height: dp(60)
+            on_release: root.manager.current = 'menu'
